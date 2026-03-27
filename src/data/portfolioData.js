@@ -7,8 +7,11 @@ export const portfolioData = {
       "Frontend Specialist expert in Vue.js and modern web technologies with full-stack support capabilities.",
     location: "Pasay, Philippines",
     email: "joseph.agustin.navarra@gmail.com",
+    phone: "+639778029311",
     github: "https://github.com/joseph-navarra",
     linkedin: "www.linkedin.com/in/navarrajosh",
+    cvUrl: "#",
+    resumeUrl: "#",
   },
 
   about: {
@@ -25,7 +28,6 @@ export const portfolioData = {
     { name: "React.js", level: 55, category: "frontend" },
     { name: "PHP / Laravel", level: 45, category: "backend" },
     { name: "Node JS", level: 40, category: "backend" },
-    { name: "REST APIs", level: 88, category: "backend" },
     { name: "PostgreSQL", level: 80, category: "backend" },
     { name: "State Management", level: 92, category: "specialized" },
     { name: "Docker", level: 60, category: "devops" },
@@ -36,9 +38,9 @@ export const portfolioData = {
   projects: [
     {
       id: 1,
-      title: "Cash-In Module",
+      title: "Cash-In/Out Module",
       description:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.",
+        "Allows users to add funds to their account or withdraw money using various channels such as bank transfers, e-wallets, or over-the-counter transactions.",
       tech: ["Vue.js", "Laravel", "Node.js"],
       status: "live",
       icon: "Wallet",
@@ -47,7 +49,7 @@ export const portfolioData = {
       id: 2,
       title: "Transaction Inquiry",
       description:
-        "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim.",
+        "Enables users to view and track their past and current transactions, including status, details, and history",
       tech: ["Vue.js", "Laravel", "Node.js"],
       status: "live",
       icon: "Search",
@@ -56,7 +58,7 @@ export const portfolioData = {
       id: 3,
       title: "Payment Gateway",
       description:
-        "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+        "A system that processes online payments securely by connecting users, merchants, and financial institutions for transactions.",
       tech: ["Vue.js", "Laravel", "Node.js"],
       status: "live",
       icon: "CreditCard",
@@ -65,7 +67,7 @@ export const portfolioData = {
       id: 4,
       title: "E-Load Gateway",
       description:
-        "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+        "Facilitates the purchase and distribution of prepaid mobile load or digital credits across different telecom providers.",
       tech: ["Vue.js", "Laravel", "Node.js"],
       status: "live",
       icon: "Smartphone",

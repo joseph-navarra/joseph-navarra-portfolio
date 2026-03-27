@@ -25,7 +25,7 @@
               <div class="p-3 rounded-lg bg-cyan/20">
                 <component :is="getIcon(store.simulationState.project.icon)" :size="28" class="text-cyan" />
               </div>
-              <div>
+              <div class="flex-1">
                 <h3 class="font-display text-2xl font-bold text-white">{{ store.simulationState.project.title }}</h3>
                 <p class="text-gray-500 text-sm">Ref: {{ store.simulationState.transactionRef }}</p>
               </div>
@@ -53,6 +53,7 @@
                     />
                   </div>
                 </template>
+
                 <template v-else-if="store.simulationState.project.icon === 'Search'">
                   <div>
                     <label class="block text-sm text-gray-400 mb-1.5">Transaction Reference</label>
@@ -64,10 +65,71 @@
                     />
                   </div>
                 </template>
+
+                <template v-else-if="store.simulationState.project.icon === 'Wallet'">
+                  <div class="flex gap-2 mb-4">
+                    <button 
+                      @click="cashTab = 'in'"
+                      class="flex-1 px-4 py-3 rounded-lg font-medium transition-all duration-300"
+                      :class="cashTab === 'in' ? 'bg-cyan text-dark' : 'bg-white/5 text-gray-400 hover:bg-white/10'"
+                    >
+                      Cash-In
+                    </button>
+                    <button 
+                      @click="cashTab = 'out'"
+                      class="flex-1 px-4 py-3 rounded-lg font-medium transition-all duration-300"
+                      :class="cashTab === 'out' ? 'bg-purple text-white' : 'bg-white/5 text-gray-400 hover:bg-white/10'"
+                    >
+                      Cash-Out
+                    </button>
+                  </div>
+
+                  <template v-if="cashTab === 'in'">
+                    <div v-for="field in getCashInFields()" :key="field.name">
+                      <label class="block text-sm text-gray-400 mb-1.5">{{ field.label }}</label>
+                      <select 
+                        v-if="field.type === 'select'"
+                        v-model="field.model.value"
+                        class="w-full px-4 py-3 bg-dark-light border border-white/10 rounded-lg text-white focus:outline-none focus:border-cyan transition-colors"
+                      >
+                        <option value="" disabled>Select {{ field.label }}</option>
+                        <option v-for="opt in field.options" :key="opt" :value="opt">{{ opt }}</option>
+                      </select>
+                      <input 
+                        v-else
+                        v-model="field.model.value"
+                        :type="field.type || 'text'"
+                        :placeholder="field.placeholder"
+                        class="w-full px-4 py-3 bg-dark-light border border-white/10 rounded-lg text-white placeholder-gray-600 focus:outline-none focus:border-cyan transition-colors"
+                      />
+                    </div>
+                  </template>
+
+                  <template v-else>
+                    <div v-for="field in getCashOutFields()" :key="field.name">
+                      <label class="block text-sm text-gray-400 mb-1.5">{{ field.label }}</label>
+                      <select 
+                        v-if="field.type === 'select'"
+                        v-model="field.model.value"
+                        class="w-full px-4 py-3 bg-dark-light border border-white/10 rounded-lg text-white focus:outline-none focus:border-cyan transition-colors"
+                      >
+                        <option value="" disabled>Select {{ field.label }}</option>
+                        <option v-for="opt in field.options" :key="opt" :value="opt">{{ opt }}</option>
+                      </select>
+                      <input 
+                        v-else
+                        v-model="field.model.value"
+                        :type="field.type || 'text'"
+                        :placeholder="field.placeholder"
+                        class="w-full px-4 py-3 bg-dark-light border border-white/10 rounded-lg text-white placeholder-gray-600 focus:outline-none focus:border-cyan transition-colors"
+                      />
+                    </div>
+                  </template>
+                </template>
+
                 <template v-else>
                   <div v-for="field in getInputFields()" :key="field.name">
                     <label class="block text-sm text-gray-400 mb-1.5">{{ field.label }}</label>
-                    
                     <select 
                       v-if="field.type === 'select'"
                       v-model="field.model.value"
@@ -76,7 +138,6 @@
                       <option value="" disabled>Select {{ field.label }}</option>
                       <option v-for="opt in field.options" :key="opt" :value="opt">{{ opt }}</option>
                     </select>
-                    
                     <input 
                       v-else
                       v-model="field.model.value"
@@ -225,6 +286,7 @@ const store = usePortfolioStore()
 const simulationLogs = ref([])
 const kmsPayload = ref('{"amount": 1000, "recipient": "user123", "timestamp": "2024-01-15T10:30:00Z"}')
 const kmsKeyName = ref('projects/petnet-prod/locations/global/keyRings/payment-keyring/cryptoKeys/signing-key')
+const cashTab = ref('in')
 
 const kmsSteps = reactive([
   { id: 'prepare', label: 'Prepare Request Payload', status: 'pending', detail: '', activeText: 'Building HMAC-SHA256 signature...' },
@@ -235,19 +297,11 @@ const kmsSteps = reactive([
   { id: 'complete', label: 'Transaction Complete', status: 'pending', detail: '', activeText: '' }
 ])
 
-const kmsDetails = reactive({
-  prepare: '',
-  sign: '',
-  send: '',
-  receive: '',
-  verify: '',
-  complete: ''
-})
-
 watch(() => store.simulationState.project, () => {
   simulationLogs.value = []
   store.simulationState.step = 'input'
   store.simulationState.status = ''
+  cashTab.value = 'in'
   kmsSteps.forEach(s => {
     s.status = 'pending'
     s.detail = ''
@@ -279,7 +333,7 @@ const demoStats = computed(() => {
   const statsMap = {
     'Wallet': [
       { label: "Today's Cash-ins", value: '₱125,430' },
-      { label: 'Pending', value: '3' },
+      { label: 'Cash-outs', value: '₱89,200' },
       { label: 'Success Rate', value: '98.5%' },
       { label: 'Avg. Time', value: '2.3s' }
     ],
@@ -312,16 +366,23 @@ const demoStats = computed(() => {
   return statsMap[project.icon] || []
 })
 
+const getCashInFields = () => [
+  { name: 'phone', label: 'Phone Number', placeholder: '09XX XXX XXXX', model: { value: '' }, type: 'tel' },
+  { name: 'amount', label: 'Cash-In Amount (₱)', placeholder: '1000.00', model: { value: '' }, type: 'number' },
+  { name: 'service', label: 'Cash-In Service', placeholder: '', model: { value: '' }, type: 'select', options: ['Service 1', 'Service 2', 'Service 3'] }
+]
+
+const getCashOutFields = () => [
+  { name: 'phone', label: 'Phone Number', placeholder: '09XX XXX XXXX', model: { value: '' }, type: 'tel' },
+  { name: 'amount', label: 'Cash-Out Amount (₱)', placeholder: '500.00', model: { value: '' }, type: 'number' },
+  { name: 'method', label: 'Withdrawal Method', placeholder: '', model: { value: '' }, type: 'select', options: ['Bank Transfer', 'E-Wallet', 'Over-the-Counter'] }
+]
+
 const getInputFields = () => {
   const project = store.simulationState.project
   if (!project) return []
 
   const fields = {
-    'Wallet': [
-      { name: 'phone', label: 'Phone Number', placeholder: '09XX XXX XXXX', model: { value: '' }, type: 'tel' },
-      { name: 'amount', label: 'Cash-In Amount (₱)', placeholder: '1000.00', model: { value: '' }, type: 'number' },
-      { name: 'service', label: 'Cash-In Service', placeholder: '', model: { value: '' }, type: 'select', options: ['Service 1', 'Service 2', 'Service 3'] }
-    ],
     'CreditCard': [
       { name: 'cardLast4', label: 'Card Last 4 Digits', placeholder: 'XXXX', model: { value: '' }, type: 'text' },
       { name: 'amount', label: 'Amount to Send (₱)', placeholder: '500.00', model: { value: '' }, type: 'number' },
@@ -337,13 +398,23 @@ const getInputFields = () => {
   return fields[project.icon] || []
 }
 
+const getCurrentFields = () => {
+  const project = store.simulationState.project
+  if (!project) return []
+  
+  if (project.icon === 'Wallet') {
+    return cashTab.value === 'in' ? getCashInFields() : getCashOutFields()
+  }
+  return getInputFields()
+}
+
 const getInput1 = () => {
-  const fields = getInputFields()
+  const fields = getCurrentFields()
   return fields[0]?.model?.value || ''
 }
 
 const getAmount = () => {
-  const fields = getInputFields()
+  const fields = getCurrentFields()
   return fields.find(f => f.name === 'amount')?.model?.value || ''
 }
 
@@ -369,6 +440,8 @@ const runSimulation = async () => {
     await runKmsSimulation()
   } else if (project.icon === 'Search') {
     await runSearchSimulation()
+  } else if (project.icon === 'Wallet') {
+    await runWalletSimulation()
   } else {
     await runGenericSimulation()
   }
@@ -392,7 +465,6 @@ const runKmsSimulation = async () => {
   
   setKmsStep(3, 'active')
   await new Promise(r => setTimeout(r, 800))
-  const responseSig = `resp_${Math.random().toString(36).substring(2, 15)}...`
   setKmsStep(3, 'complete', `Response signature received`)
   
   setKmsStep(4, 'active')
@@ -407,8 +479,6 @@ const runKmsSimulation = async () => {
 }
 
 const runSearchSimulation = async () => {
-  simulationLogs.value = []
-  
   await new Promise(r => setTimeout(r, 600))
   simulationLogs.value.push(`Initializing Transaction Inquiry...`)
   
@@ -423,6 +493,42 @@ const runSearchSimulation = async () => {
   
   store.simulationState.status = 'success'
   store.simulationState.step = 'complete'
+}
+
+const runWalletSimulation = async () => {
+  const input1 = getInput1()
+  const amount = getAmount()
+  const tab = cashTab.value
+
+  await new Promise(r => setTimeout(r, 600))
+  simulationLogs.value.push(`Initializing ${tab === 'in' ? 'Cash-In' : 'Cash-Out'} Module...`)
+  
+  await new Promise(r => setTimeout(r, 500))
+  simulationLogs.value.push(`Validating account...`)
+  
+  await new Promise(r => setTimeout(r, 400))
+  simulationLogs.value.push(`Account: ${input1 || 'demo-user'}`)
+  
+  if (amount) {
+    await new Promise(r => setTimeout(r, 300))
+    simulationLogs.value.push(`Amount: ₱${parseFloat(amount).toLocaleString()}`)
+  }
+
+  await new Promise(r => setTimeout(r, 500))
+  
+  if (tab === 'in') {
+    simulationLogs.value.push(`Verifying payment reference...`)
+    simulationLogs.value.push(`Processing cash-in...`)
+  } else {
+    simulationLogs.value.push(`Checking withdrawal method...`)
+    simulationLogs.value.push(`Processing cash-out...`)
+  }
+
+  await new Promise(r => setTimeout(r, 400))
+  simulationLogs.value.push('Generating secure OTP...')
+
+  store.openOtp()
+  store.simulationState.step = 'input'
 }
 
 const runGenericSimulation = async () => {
@@ -445,9 +551,7 @@ const runGenericSimulation = async () => {
   }
 
   await new Promise(r => setTimeout(r, 500))
-  simulationLogs.value.push(project.icon === 'Wallet' 
-    ? 'Verifying payment reference...' 
-    : project.icon === 'Smartphone'
+  simulationLogs.value.push(project.icon === 'Smartphone'
     ? 'Checking network availability...'
     : 'Connecting to payment gateway...'
   )
