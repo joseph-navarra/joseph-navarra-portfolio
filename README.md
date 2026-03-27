@@ -118,5 +118,5 @@ MIT License - feel free to use this template for your own portfolio.
 ## Contact
 
 - **Email:** joseph.agustin.navarra@gmail.com
-- **GitHub:** [JNavarraa](https://github.com/joseph-navarra)
+- **GitHub:** [Joseph Navarra](https://github.com/joseph-navarra)
 - **LinkedIn:** [Joseph Navarra](www.linkedin.com/in/navarrajosh)
