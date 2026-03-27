@@ -9,9 +9,7 @@ export const portfolioData = {
     email: "joseph.agustin.navarra@gmail.com",
     phone: "+639778029311",
     github: "https://github.com/joseph-navarra",
-    linkedin: "www.linkedin.com/in/navarrajosh",
-    cvUrl: "src/assets/JOSEPH_NAVARRA_CV.pdf",
-    resumeUrl: "src/assets/JOSEPH_NAVARRA_RESUME.pdf",
+    linkedin: "www.linkedin.com/in/navarrajosh"
   },
 
   about: {

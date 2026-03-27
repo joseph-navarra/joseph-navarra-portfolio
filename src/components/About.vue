@@ -76,25 +76,6 @@
             {{ data.about.shortBio }}
           </p>
 
-          <div class="flex flex-wrap gap-3 mb-8">
-            <a
-              :href="data.personal.cvUrl"
-              download="Joseph_Navarra_CV.pdf"
-              class="flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-cyan to-cyan/80 text-dark font-semibold rounded-lg hover:shadow-lg hover:shadow-cyan/25 transition-all duration-300"
-            >
-              <FileText :size="18" />
-              Download CV
-            </a>
-            <a
-              :href="data.personal.resumeUrl"
-              download="Joseph_Navarra_Resume.pdf"
-              class="flex items-center gap-2 px-5 py-2.5 border border-white/20 text-white font-medium rounded-lg hover:border-purple hover:text-purple transition-all duration-300"
-            >
-              <FileDown :size="18" />
-              Download Resume
-            </a>
-          </div>
-
           <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
             <div
               class="glass rounded-xl p-5 text-center group hover:border-cyan/30 transition-all duration-300"
