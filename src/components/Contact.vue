@@ -6,8 +6,8 @@
           Get In <span class="text-gradient">Touch</span>
         </h2>
         <p class="text-gray-400 max-w-xl mx-auto">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua.
+          To connect for inquiries, collaborations, or support through available
+          contact channels.
         </p>
       </div>
 
