@@ -9,7 +9,7 @@ export const portfolioData = {
     email: "joseph.agustin.navarra@gmail.com",
     phone: "+639778029311",
     github: "https://github.com/joseph-navarra",
-    linkedin: "www.linkedin.com/in/navarrajosh"
+    linkedin: "https://www.linkedin.com/in/navarrajosh/"
   },
 
   about: {
