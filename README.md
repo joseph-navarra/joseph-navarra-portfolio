@@ -104,6 +104,7 @@ Output will be in the `dist` directory.
 ## Interactive Demo
 
 The Dashboard Preview section allows users to:
+
 1. Select a project
 2. Enter transaction details (amount, recipient)
 3. Process a simulated payment
@@ -116,6 +117,6 @@ MIT License - feel free to use this template for your own portfolio.
 
 ## Contact
 
-- **Email:** josephnavarra10@gmail.com
-- **GitHub:** [JNavarraa](https://github.com/JNavarraa)
-- **LinkedIn:** [Joseph Navarra](https://linkedin.com/in/joseph-navarra)
+- **Email:** joseph.agustin.navarra@gmail.com
+- **GitHub:** [JNavarraa](https://github.com/joseph-navarra)
+- **LinkedIn:** [Joseph Navarra](www.linkedin.com/in/navarrajosh)
